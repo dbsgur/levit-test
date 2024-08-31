@@ -4,12 +4,13 @@ import {
   ScrollRestoration,
   createBrowserRouter,
 } from "react-router-dom";
-import { TimeDeal, BrandDeal } from "@/pages";
+import { TimeDeal, BrandDeal, InternalServerError } from "@/pages";
 import { Suspense } from "react";
 
 export const webPath = {
   timeDeal: () => "/deals/time-deal",
   brandDeal: () => "/deals/brand-deal",
+  internalServerError: () => "/internal-error",
 };
 
 type MainLayoutProps = {
@@ -46,6 +47,7 @@ const routes = [
       { path: "/", element: <Navigate to={webPath.timeDeal()} replace /> },
       { path: webPath.timeDeal(), element: <TimeDeal /> },
       { path: webPath.brandDeal(), element: <BrandDeal /> },
+      { path: webPath.internalServerError(), element: <InternalServerError /> },
     ],
   },
 ];

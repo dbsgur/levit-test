@@ -1,3 +1,4 @@
+import { formatCurrency, getDiscountPrice } from "@/libs";
 import { ProductModel } from "@/models/product-model";
 import { brandDealRepository } from "@/repositories/brand-deal-repository";
 import { Stack, Typography } from "@mui/material";
@@ -6,9 +7,9 @@ import InfiniteScroll from "react-infinite-scroller";
 
 const Card = ({ product }: { product: ProductModel }) => {
   const { title, originalPrice, discountRate, image } = product;
-  const discountPrice = (originalPrice * discountRate) / 100;
+  const discountPrice = getDiscountPrice(originalPrice, discountRate);
   return (
-    <Stack direction="row" mx={2}>
+    <Stack direction="row" mx={2} spacing={2}>
       <Stack
         sx={{
           width: "140px",
@@ -19,15 +20,20 @@ const Card = ({ product }: { product: ProductModel }) => {
       >
         <img src={image} />
       </Stack>
-      <Stack direction="column">
-        <Stack>
+      <Stack direction="column" spacing={2}>
+        <Stack spacing={1}>
           <Typography variant="body1">{title}</Typography>
           <Typography variant="body1">ProgressBar</Typography>
         </Stack>
         <Stack>
-          <Typography variant="h6">할인가 {discountPrice}원</Typography>
-          <Typography variant="body2">
-            곧 정상가 {originalPrice}원으로 돌아갑니다.
+          <Typography
+            variant="body1"
+            sx={{ color: "#F8323E", fontWeight: "700" }}
+          >
+            할인가 {discountPrice}원
+          </Typography>
+          <Typography variant="body2" sx={{ color: "gray" }}>
+            곧 정상가 {formatCurrency(originalPrice)}원으로 돌아갑니다.
           </Typography>
         </Stack>
       </Stack>
@@ -57,7 +63,7 @@ export const BrandDealList = () => {
         </div>
       }
     >
-      <Stack spacing={2} direction="column" mx={2}>
+      <Stack spacing={2} direction="column" mx={2} my={2}>
         {products.map((product) => (
           <Stack key={product.id}>
             <Card product={product} />

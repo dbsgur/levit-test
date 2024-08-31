@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { lureDealRepository } from "@/repositories/lure-deal-repository";
 import { ProductModel } from "@/models/product-model";
-import InfiniteScroll from "react-infinite-scroller";
 import Stack from "@mui/material/Stack";
 import { Typography } from "@mui/material";
 import { getDiscountPrice } from "@/libs";
@@ -59,28 +58,14 @@ const Content = () => {
     getProducts();
   }, []);
 
-  async function test() {
-    // const r = await lureDealRepository.list();
-    // setProducts([...products, ...r]);
-  }
-
   return (
-    <InfiniteScroll
-      pageStart={0}
-      loadMore={test}
-      hasMore={true}
-      loader={<Stack key="loader">Loading ...</Stack>}
-      useWindow={false}
-      getScrollParent={() => document.getElementById("scrollContainer")}
-    >
-      <Stack spacing={2} direction="row" mx={2} sx={{ overflow: "scroll" }}>
-        {products.map((product: ProductModel) => (
-          <Stack key={product.id}>
-            <Card product={product} />
-          </Stack>
-        ))}
-      </Stack>
-    </InfiniteScroll>
+    <Stack spacing={2} direction="row" mx={2} sx={{ overflow: "scroll" }}>
+      {products.map((product: ProductModel) => (
+        <Stack key={product.id}>
+          <Card product={product} />
+        </Stack>
+      ))}
+    </Stack>
   );
 };
 
