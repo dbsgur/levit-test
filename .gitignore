@@ -26,6 +26,7 @@ dist-ssr
 
 
 .pnp.*
+.yarn
 .yarn/*
 !.yarn/cache
 !.yarn/patches
@@ -33,4 +34,3 @@ dist-ssr
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-
