@@ -1,10 +1,9 @@
 import { ProductModel } from "@/models/product-model";
 import { Heading } from "../Heading";
-import { brandDealRepository } from "@/repositories/brand-deal-repository";
 import { Stack, Typography, Chip } from "@mui/material";
-import { useState, useEffect } from "react";
 import { getDiscountPrice } from "@/libs";
 import { getTimeRemaining } from "@/libs/date";
+import { useBrandDeals } from "@/libs/brand-deal";
 
 const Card = ({ product }: { product: ProductModel }) => {
   const { title, originalPrice, discountRate, image, discountEndDate } =
@@ -58,15 +57,7 @@ const Card = ({ product }: { product: ProductModel }) => {
 };
 
 const Content = () => {
-  const [products, setProducts] = useState([] as ProductModel[]);
-
-  useEffect(() => {
-    async function getProducts() {
-      const r = await brandDealRepository.list(1);
-      setProducts([...r.itemList]);
-    }
-    getProducts();
-  }, []);
+  const products = useBrandDeals();
   return (
     <Stack direction="row" sx={{ overflow: "scroll" }}>
       {products.map((product) => (

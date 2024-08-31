@@ -2,8 +2,9 @@ import { formatCurrency, getDiscountPrice } from "@/libs";
 import { ProductModel } from "@/models/product-model";
 import { brandDealRepository } from "@/repositories/brand-deal-repository";
 import { Stack, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
+import { useBrandDeals } from "@/libs/brand-deal";
 
 const Card = ({ product }: { product: ProductModel }) => {
   const { title, originalPrice, discountRate, image } = product;
@@ -42,16 +43,13 @@ const Card = ({ product }: { product: ProductModel }) => {
 };
 
 export const BrandDealList = () => {
-  const [products, setProducts] = useState([] as ProductModel[]);
+  const initProducts = useBrandDeals();
+  const [products, setProducts] = useState([...initProducts] as ProductModel[]);
   async function getProducts() {
     const r = await brandDealRepository.list(1);
     setProducts([...products, ...r.itemList]);
   }
 
-  useEffect(() => {
-    if (products.length > 0) return;
-    getProducts();
-  }, []);
   return (
     <InfiniteScroll
       pageStart={0}

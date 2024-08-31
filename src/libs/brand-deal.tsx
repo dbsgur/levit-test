@@ -1,8 +1,6 @@
 import { ProductModel } from "@/models/product-model";
 import { brandDealRepository } from "@/repositories/brand-deal-repository";
-import { useEffect, useMemo, useState, createContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { webPath } from "@/router";
+import { useEffect, useMemo, useState, createContext, useContext } from "react";
 
 const BrandDealContext = createContext<{ getBrandDeals: () => ProductModel[] }>(
   {
@@ -12,12 +10,11 @@ const BrandDealContext = createContext<{ getBrandDeals: () => ProductModel[] }>(
   }
 );
 
-function brandDealProvider({ children }: { children?: React.ReactNode }) {
-  const navigate = useNavigate();
+function BrandDealProvider({ children }: { children?: React.ReactNode }) {
   const [brandDeals, setBrandDeals] = useState([] as ProductModel[]);
 
   const navigateToError = () => {
-    navigate(webPath.internalServerError());
+    window.location.href = "/internal-error";
   };
   const brandDealContext = useMemo(
     () => ({
@@ -44,5 +41,10 @@ function brandDealProvider({ children }: { children?: React.ReactNode }) {
     </BrandDealContext.Provider>
   );
 }
+const useBrandDeals: () => ProductModel[] = () => {
+  const context = useContext(BrandDealContext);
+  const brandDeals = context.getBrandDeals();
+  return brandDeals;
+};
 
-export { brandDealProvider };
+export { BrandDealProvider, useBrandDeals };
